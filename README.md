@@ -1,8 +1,3 @@
-Name: Courtney Shi			            *
-Project 2: File Manager using Electron	*
-Course: Advanced Javascript		        *
-*****************************************
-
 To run the file manager:
 -Go to the correct directory of where you saved and extracted all of the files from the zip folder. (cd ...)
 -Type: "npm start"
