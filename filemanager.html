@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+</head>
+<body>
+    
+    <div id = 'inputBox'>    
+    </div>
+    
+    <div id = 'dropdown1'>    
+    </div>  
+
+    <script>
+        var config = {
+            type: Phaser.AUTO,
+            width: 1389, 
+            height: 705, 
+            physics: {
+            default: 'arcade',
+            arcade: {
+                debug: false
+                }
+            },
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+
+        var game = new Phaser.Game(config);
+        
+        var cursors;
+        var musicSprite1;
+        
+        //Loads in all of the images and mp3 files needed for the program
+        function preload ()
+        {
+            this.load.audio('tune', ['assets/PokemonCenterOST.mp3']);
+            
+            this.load.audio('tune2', ['assets/RoadtoViridianCityOST.mp3']);
+            
+            this.load.audio('tune3', ['assets/PokeMartOST.mp3']);
+            
+            this.load.audio('tune4', ['assets/Route104OST.mp3']);
+
+            this.load.image('grass', 'assets/background2.png');
+
+            this.load.image('star', 'assets/docSprite.png');
+            
+            this.load.image('eevee', 'assets/eevee.png');
+            
+            this.load.image('vaporeon', 'assets/vaporeon.png');
+            
+            this.load.image('flareon', 'assets/flareon.png');
+         
+            this.load.image('dialga', 'assets/dialga.png');
+            
+            this.load.image('giratina', 'assets/giratina.png');
+
+            this.load.image('egg', 'assets/egg.png');
+            
+            this.load.image('music', 'assets/music.png');
+            
+            this.load.image('pokeball', 'assets/pokeball.png');
+
+            this.load.image('pokemart', 'assets/pokemart.png');
+
+            this.load.image('copy', 'assets/copy.png');
+            
+            this.load.image('copy2', 'assets/copy2.png');
+
+            this.load.image('cresselia', 'assets/cresselia.png');
+            
+            this.load.image('leafeon', 'assets/leafeon.png');
+            
+            this.load.image('umbreon', 'assets/umbreon.png');
+            
+            this.load.image('glaceon', 'assets/glaceon.png');
+            
+            this.load.image('espeon', 'assets/espeon.png');
+            
+            this.load.image('latias', 'assets/latias.png');
+        }
+
+        //Creates the main sprites needed for the program
+        function create()
+        {  
+            var style = {fontSize: '12px', fontWeight: 'bold', fill: 'white'};
+
+            var background = this.add.image(695, 375, 'grass');
+            
+            background.setScrollFactor(0);
+            
+            var sprites = this.add.group();
+            var backSprite = this.add.group();
+            var labels = this.add.group({
+                classType: Phaser.GameObjects.Text
+            });
+            
+            var back = this.add.sprite(1325, 60, 'dialga'); //1295
+            
+            back.setScrollFactor(0);
+            
+            var backText = this.add.text(1288, 110, 'Previous', style);
+            
+            backText.setScrollFactor(0);
+
+            var trash = this.add.sprite(1325, 490, 'giratina');
+            
+            trash.setScrollFactor(0);
+            
+            var trashText = this.add.text(1307, 535, 'Delete', style);
+
+            trashText.setScrollFactor(0);
+            
+            var createFile = this.add.sprite(1320, 165, 'egg');
+            
+            createFile.setScrollFactor(0);
+            
+            var createFileText = this.add.text(1280, 195, 'Create File', style);
+            
+            createFileText.setScrollFactor(0);
+
+            var createDir = this.add.sprite(1320, 270, 'pokemart');
+            
+            createDir.setScrollFactor(0);
+            
+            var createDirText = this.add.text(1260, 320, 'Create Directory', style);
+            
+            createDirText.setScrollFactor(0);
+            
+            var copyFile = this.add.sprite(1330, 585, 'copy');
+            
+            copyFile.setScrollFactor(0);
+            
+            var copyFileText = this.add.text(1317, 610, 'Copy', style);
+            
+            copyFileText.setScrollFactor(0);
+            
+            var prevDir = this.add.sprite(1325, 385, 'cresselia');
+            
+            prevDir.setScrollFactor(0);
+            
+            var prevDirText = this.add.text(1310, 425, 'Move', style);
+            
+            prevDirText.setScrollFactor(0);
+
+            var musicSprite = this.add.sprite(62, 45, 'music');
+            
+            musicSprite.setScrollFactor(0);
+            
+            var musicText = this.add.text(42, 80, 'Music', style);
+            
+            musicText.setScrollFactor(0);
+            
+            //SCROLLING SPRITE
+            
+            musicSprite1 = this.physics.add.sprite(680, 400, 'latias');
+            
+            musicSprite1.setName('scroll');
+            
+            cursors = this.input.keyboard.createCursorKeys();
+                         
+            this.cameras.main.startFollow(musicSprite1);
+
+            trash.setInteractive({ dropZone: true }).setName('trash');   
+            
+            musicSprite.setInteractive();
+            
+            createFile.setInteractive();  
+            
+            createDir.setInteractive();  
+            
+            copyFile.setInteractive({ dropZone: true }).setName('copy');
+            
+            prevDir.setInteractive({ dropZone: true }).setName('cresselia');
+            
+
+            back.setInteractive();
+            
+            var path = "C:\\Users";
+            
+            getFiles(this, path, sprites, labels, trash, createFile, musicSprite1, displayFiles);
+        }
+
+        //Gives the scrolling sprite a velocity
+        function update ()
+        {
+            if(cursors.up.isDown)
+            {
+                musicSprite1.setVelocityY(-160);   
+            }
+            
+            else if(cursors.down.isDown)
+            {
+                musicSprite1.setVelocityY(160);   
+            }
+            
+            else
+            {
+                musicSprite1.setVelocityY(0);
+            }
+        }
+
+    </script>
+
+</body>
+</html>
